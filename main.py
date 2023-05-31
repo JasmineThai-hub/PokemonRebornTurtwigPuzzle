@@ -1,15 +1,11 @@
-import sys
-
-import cv2
-import numpy as np
 import pyautogui
 import time
 import pydirectinput
-from queue import PriorityQueue
-import ctypes
-from PIL import Image
-
 import matplotlib.pyplot as plt
+import cv2
+import numpy as np
+from skimage.metrics import mean_squared_error
+from skimage.metrics import structural_similarity as ssim
 
 def combine_tiles(matrix, goal_tiles):
     tile_height, tile_width, _ = goal_tiles[0].shape
@@ -25,17 +21,6 @@ def combine_tiles(matrix, goal_tiles):
 
     return combined_image
 
-pyautogui.click(x=1402, y=1039)
-time.sleep(1)
-
-
-"""
-region is X: (700, 1220)
-          Y: (180, 700)
-          region=(700, 180, 1220, 700)
-"""
-import cv2
-import numpy as np
 
 def threshold(array, th=20, above_to_max = False):
   #check type numpy
@@ -71,12 +56,6 @@ def split_screenshot(screenshot, rows, cols):
     return tiles
 
 # Function to compare and label tiles
-from skimage.metrics import mean_squared_error
-
-from skimage.metrics import mean_squared_error
-from skimage.metrics import structural_similarity as ssim
-
-
 def label_tiles(tiles, goal_tiles):
     labels = []
     red_threshold = 50  # Set a threshold for the number of red pixels
@@ -172,31 +151,10 @@ def label_tiles(tiles, goal_tiles):
     return labels
 
 
-
 # Function to store labels in a numpy matrix
 def store_labels_in_matrix(labels, rows, cols):
     return np.array(labels).reshape(rows, cols)
 
-# Main code
-goal_tile_images = [np.array(cv2.resize(cv2.imread(f'goal{i}.png'), (130, 130))) for i in range(1, 16)]  # Load the goal tile images in a list (1-15)
-x1, y1 = 700, 180
-x2, y2 = 1220, 700
-width, height = x2 - x1, y2 - y1
-region = (x1, y1, width, height)
-  # Define the region of the tile puzzle
-screenshot = capture_screenshot(region)
-tiles = split_screenshot(screenshot, 4, 4)
-labels = label_tiles(tiles, goal_tile_images)
-tile_matrix = store_labels_in_matrix(labels, 4, 4)
-
-print(tile_matrix)
-
-# Combine the goal tiles based on the labels matrix
-result_image = combine_tiles(tile_matrix, goal_tile_images)
-
-# Display the combined image
-plt.imshow(result_image)
-plt.show()
 
 def test_accuracy(actual, generated):
     correct = 0
@@ -210,7 +168,6 @@ def test_accuracy(actual, generated):
 
     accuracy = (correct / total) * 100
     return accuracy
-
 
 import random
 
@@ -322,7 +279,6 @@ def encode_cfg(cfg, n):
         r |= cfg[i] << (b*i)
     return r
 
-
 def gen_wd_table(n):
     goal = [[0] * i + [n] + [0] * (n - 1 - i) for i in range(n)]
     goal[-1][-1] = n - 1
@@ -379,18 +335,46 @@ def slide_wd(n, goal):
         return d
     return h
 
-initial_state = tile_matrix
 
-goal_state = np.array([
-    [1, 2, 3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 11, 12],
-    [13, 14, 15, 0]
-])
 
 
 
 if __name__ == "__main__":
+
+    #sleep to click game window
+    time.sleep(2)
+
+    # Main code
+    goal_tile_images = [np.array(cv2.resize(cv2.imread(f'goal{i}.png'), (130, 130))) for i in
+                        range(1, 16)]  # Load the goal tile images in a list (1-15)
+    x1, y1 = 700, 180
+    x2, y2 = 1220, 700
+    width, height = x2 - x1, y2 - y1
+    region = (x1, y1, width, height)
+    # Define the region of the tile puzzle
+    screenshot = capture_screenshot(region)
+    tiles = split_screenshot(screenshot, 4, 4)
+    labels = label_tiles(tiles, goal_tile_images)
+    tile_matrix = store_labels_in_matrix(labels, 4, 4)
+
+    print(tile_matrix)
+
+    # Combine the goal tiles based on the labels matrix
+    result_image = combine_tiles(tile_matrix, goal_tile_images)
+
+    # Display the combined image
+    plt.imshow(result_image)
+    plt.show()
+
+    initial_state = tile_matrix
+
+    goal_state = np.array([
+        [1, 2, 3, 4],
+        [5, 6, 7, 8],
+        [9, 10, 11, 12],
+        [13, 14, 15, 0]
+    ])
+
     solved_state = slide_solved_state(4)
     neighbours = slide_neighbours(4)
     is_goal = lambda p: p == solved_state
