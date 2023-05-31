@@ -1,6 +1,6 @@
-# Project Title: 4x4 Puzzle Solver
+# Turtwig Reborn Puzzle Solver
 
-This is a Python program that uses image processing and AI-based search algorithms to solve a 4x4 sliding tile puzzle. 
+This is a Python program that uses image processing and AI-based search algorithms to solve a the turtwig sliding puzzle in Pokemon Reborn. 
 
 The code is designed to capture the state of a sliding puzzle from a screenshot, identify the tiles, and then use an IDA* (Iterative Deepening A*) algorithm to find the solution. 
 
@@ -29,13 +29,13 @@ pip install opencv-python pyautogui numpy pydirectinput queue ctypes Pillow matp
 
 1. Run the script with Python.
 
-2. Make sure the 4x4 sliding puzzle is visible on the screen, in the specified region (X: 700 to 1220, Y: 180 to 700).
+2. Make sure the game window is visible on the screen, in the specified region (X: 700 to 1220, Y: 180 to 700).
 
 3. The script will capture a screenshot of the specified region, then identify and label the tiles.
 
 4. The IDA* algorithm will calculate the moves required to solve the puzzle.
 
-5. The script will then simulate these moves, solving the puzzle in real-time.
+5. The script will then simulate these moves using PyDirectInput, solving the puzzle in real-time.
 
 6. You can observe the final state of the puzzle and the steps taken to solve it.
 
@@ -57,3 +57,5 @@ pip install opencv-python pyautogui numpy pydirectinput queue ctypes Pillow matp
 - Make sure all goal tile images are present in the same directory as the script.
 
 - This code is designed for 4x4 sliding puzzles. For puzzles of other sizes, you'll need to adjust the code accordingly.
+
+- Doesn't work 100% of the time, just an fyi
