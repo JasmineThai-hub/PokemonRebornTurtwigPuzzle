@@ -1,6 +1,6 @@
 # Turtwig Reborn Puzzle Solver
 
-This is a Python program that uses image processing and AI-based search algorithms to solve a the turtwig sliding puzzle in Pokemon Reborn. 
+This is a Python program that uses image processing and AI-based search algorithms to solve the turtwig sliding puzzle in Pokemon Reborn. 
 
 The code is designed to capture the state of a sliding puzzle from a screenshot, identify the tiles, and then use an IDA* (Iterative Deepening A*) algorithm to find the solution. 
 
