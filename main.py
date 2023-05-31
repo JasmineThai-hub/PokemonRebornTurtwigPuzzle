@@ -345,7 +345,7 @@ if __name__ == "__main__":
     time.sleep(2)
 
     # Main code
-    goal_tile_images = [np.array(cv2.resize(cv2.imread(f'goal{i}.png'), (130, 130))) for i in
+    goal_tile_images = [np.array(cv2.resize(cv2.imread(f'goals/goal{i}.png'), (130, 130))) for i in
                         range(1, 16)]  # Load the goal tile images in a list (1-15)
     x1, y1 = 700, 180
     x2, y2 = 1220, 700
